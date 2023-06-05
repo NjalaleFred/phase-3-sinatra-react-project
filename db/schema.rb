@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_05_170454) do
+ActiveRecord::Schema.define(version: 2023_06_05_175053) do
 
   create_table "doctors", force: :cascade do |t|
     t.string "name"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_170454) do
   end
 
   create_table "medical_records", force: :cascade do |t|
-    t.string "diagnsosis"
+    t.string "diagnosis"
     t.string "treatment"
     t.string "medication"
     t.string "vitals"
