@@ -17,9 +17,13 @@ specializations = [
 ]
 
 15.times do
+  name = Faker::Name.name
+  email = "#{name.downcase.gsub(' ','')}@gmail.com"
+
   Doctor.create(
-    name: Faker::Name.name,
-    specialization: specializations.sample
+    name: name,
+    specialization: specializations.sample,
+    email: email
   )
 end
 
@@ -28,17 +32,18 @@ puts "Create patients"
 
 30.times do
   phone_number = Faker::Number.unique.number(digits: 8).to_s
-
+  name = Faker::Name.name
+  email = "#{name.downcase.gsub(' ','')}@gmail.com"
   prefix = ["07", "01"].sample
   phone_number = prefix + phone_number
 
 
   Patient.create(
-    name: Faker::Name.name,
+    name: name,
     age: Faker::Number.between(from: 18, to: 80),
     gender: Faker::Gender.binary_type,
     phone_number: phone_number,
-    email: Faker::Internet.email
+    email: email
   )
 end
 
@@ -58,8 +63,8 @@ medication = ["Aspirin", "Lisinopril", "Insulin", "Albuterol", "Sumatriptan", "T
     treatment: treatments.sample,
     medication: medication.sample,
     vitals: vitals.sample,
-    doctors_id: doctor.id,
-    patients_id: patient.id
+    doctor_id: doctor.id,
+    patient_id: patient.id
   )
 end
 

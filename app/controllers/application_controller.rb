@@ -1,38 +1,36 @@
-require 'json'
-
 class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
 
 # I have created two gets for each in case there is need to search for any of them then one can do so by having the id.
 
   get '/doctors' do
-    doctors = Doctor.all
-    doctors.to_json(include: {medical_records: {include: :patient}})
+    doctor = Doctor.all
+    doctor.to_json(include: {medical_records: {include: :patient}})
   end
 
   get '/doctors/:id' do
-    doctors = Doctor.find(params[:id])
-    doctors.to_json(include: {medical_records: {include: :patient}})
+    doctor = Doctor.find(params[:id])
+    doctor.to_json(include: {medical_records: {include: :patient}})
   end
 
   get '/patients' do
-    patients = Patient.all
-    patients.to_json(include: {medical_records: {include: :doctor}})
+    patient = Patient.all
+    patient.to_json(include: {medical_records: {include: :doctor}})
   end
 
   get '/patients/:id' do
-    patients = Patient.find(params[:id])
-    patients.to_json(include: {medical_records: {include: :doctor}})
+    patient = Patient.find(params[:id])
+    patient.to_json(include: {medical_records: {include: :doctor}})
   end
 
   get '/records' do
-    records = MedicalRecord.all
-    records.to_json
+    record = MedicalRecord.all
+    record.to_json
   end
 
   get '/records/:id' do
-    records = MedicalRecord.find(params[:id])
-    records.to_json
+    record = MedicalRecord.find(params[:id])
+    record.to_json
   end
 
   delete '/doctors/:id' do
@@ -100,6 +98,62 @@ class ApplicationController < Sinatra::Base
       email: params[:email] || patient.email
     )
     patient.to_json
+  end
+
+  post '/signup' do
+    role = params[:role].to_s.downcase
+
+    if role == 'doctor'
+      doctor = Doctor.find_by(name: params[:name])
+      if doctor
+        user = User.create(
+          email: params[:email], 
+          password: params[:password]
+          role: 'doctor',
+          doctor: doctor
+        )
+        user.to_json
+      else
+        { error: 'Doctor not found' }.to_json
+      end
+    elsif role == 'patient'
+      patient = Patient.find_by(email: params[:email])
+      if patient
+        user = User.create(
+          email: params[:email],
+          password: params[:password],
+          role: 'patient',
+          patient: patient
+        )
+        user.to_json
+      else
+        patient = Patient.create(
+          name: params[:name],
+          age: params[:age],
+          gender: params[:gender],
+          phone_number: params[:phone_number],
+          email: params[:email]
+        )
+        user.to_json
+      else
+        { error: 'Invalid role' }.to_json
+      end
+  end
+
+  post '/login' do
+    user = User.find_by(email: params[:email])
+
+    if user && user.password == params[:password]
+      user.to_json
+    else
+      { error: 'Incorrect email or password' }.to_json
+    end
+  end
+
+  patch '/users/:id' do
+    user = User.find(params[:id])
+    user.update(role: 'admin')
+    user.to_json
   end
 
 end
