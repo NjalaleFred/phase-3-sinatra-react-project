@@ -108,7 +108,7 @@ class ApplicationController < Sinatra::Base
       if doctor
         user = User.create(
           email: params[:email], 
-          password: params[:password]
+          password: params[:password],
           role: 'doctor',
           doctor: doctor
         )
@@ -134,10 +134,18 @@ class ApplicationController < Sinatra::Base
           phone_number: params[:phone_number],
           email: params[:email]
         )
+        user = User.create(
+          email: params[:email],
+          password: params[:password],
+          role: 'patient',
+          patient: patient
+        )
         user.to_json
-      else
-        { error: 'Invalid role' }.to_json
       end
+    else
+      { error: 'Invalid role' }.to_json
+    end
+    
   end
 
   post '/login' do
