@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_06_210115) do
+ActiveRecord::Schema.define(version: 2023_06_07_093822) do
 
   create_table "doctors", force: :cascade do |t|
     t.string "name"
@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(version: 2023_06_06_210115) do
     t.string "name"
     t.string "email"
     t.string "role"
-    t.index "\"doctor_id\"", name: "index_users_on_doctor_id", unique: true
-    t.index "\"patient_id\"", name: "index_users_on_patient_id", unique: true
+    t.string "password"
+    t.integer "doctor_id"
+    t.integer "patient_id"
+    t.index ["patient_id"], name: "index_users_on_patient_id", unique: true
   end
 
 end

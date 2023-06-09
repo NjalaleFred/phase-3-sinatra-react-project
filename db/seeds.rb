@@ -16,7 +16,7 @@ specializations = [
   "Radiology"
 ]
 
-15.times do
+20.times do
   name = Faker::Name.name
   email = "#{name.downcase.gsub(' ','')}@gmail.com"
 
@@ -30,7 +30,7 @@ end
 puts "Create patients"
 
 
-30.times do
+100.times do
   phone_number = Faker::Number.unique.number(digits: 8).to_s
   name = Faker::Name.name
   email = "#{name.downcase.gsub(' ','')}@gmail.com"
@@ -54,7 +54,7 @@ treatments = ["Rest and medication", "Lifestyle changes", "Surgery", "Physical t
 vitals = ["120/80 mmHg", "98 bpm", "36.5°C", "80 kg", "10/10 pain level"]
 medication = ["Aspirin", "Lisinopril", "Insulin", "Albuterol", "Sumatriptan", "Tamoxifen", "Ibuprofen", "Oseltamivir", "Sertraline", "Amoxicillin"]
 
-40.times do
+120.times do
   doctor = Doctor.order("RANDOM()").first
   patient = Patient.order("RANDOM()").first
 
